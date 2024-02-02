@@ -30,41 +30,28 @@ windows_amount=0
 limit_of_windows=3
 limit_of_doors=2
 
-if c>=2:
-    for i in range(1,5):
-        if i==1:
-            if 0.3*a>=0.9:
-                doors_amount+=1
-            elif 0.3*b>=0.9 and doors_amount<1:
-                doors_amount+=1
-                if doors_amount>1:
-                    doors_amount=1
-        if i!=1 and i!=5:
-            if(0.3*a)-(doors_amount*0.9)>=0.9:
-                windows_amount+=2
-                if(0.3*a)-(doors_amount*0.9)-(windows_amount*0.9)>=0.9:
-                    windows_amount+=1
-            elif(0.3*b)-(doors_amount*0.9)>=0.9:
-                windows_amount+=2
-                if windows_amount>3:
-                    windows_amount=3
-                if(0.3*b)-(doors_amount*0.9)-(windows_amount*0.9)>=0.9:
-                    windows_amount+=1
-                    if windows_amount>3:
-                        windows_amount=3
-        if i==5:
-            if(0.3*a)-(doors_amount*0.9)-(windows_amount*0.9)>=0.9:
-                doors_amount+=1
-                if doors_amount>1:
-                    doors_amount=1
-            elif 0.3*b>=0.9 and doors_amount<1:
-                doors_amount+=1
+if c >= 2:
+    for i in range(1, 6):
+        if i == 1 and (0.3 * a >= Door_width or 0.3 * b >= Door_width) and doors_amount < limit_of_doors:
+            doors_amount += 1
+        elif i in [2, 3, 4] and windows_amount < limit_of_windows:
+            if doors_amount==1 and i==2:
+                windows_amount+=1
+            elif (0.3 * a) - (doors_amount * Door_width) >= Window_width:
+                windows_amount += 1
+            elif (0.3 * b) - (doors_amount * Door_width) >= Window_width:
+                windows_amount += 1
+        elif i == 5 and (0.3 * a) - (doors_amount * Door_width) - (windows_amount * Window_width) >= Door_width and doors_amount < limit_of_doors:
+            doors_amount += 1
 else:
-    print('Too low to made doors')
+    print('Too low to make doors')
+
+
 
 doors_and_windows_area=windows_amount*0.9+doors_amount*1.8
 
-needed_amount_of_paint=room_area/from_1_bucket-doors_and_windows_area
+needed_amount_of_paint=(room_area/from_1_bucket-doors_and_windows_area)+1
 
-print(needed_amount_of_paint)
+print(f'Amount of doors: {doors_amount}\nAmount of windows: {windows_amount}\n\nTo paint it all u\'ll need {round(needed_amount_of_paint)} jars of paint')
 
+    
